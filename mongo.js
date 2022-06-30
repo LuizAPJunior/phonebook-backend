@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
     process.exit(1)
 }
 
-const password = process.argv[2]
+
 const name = process.argv[3]
 const number = process.argv[4]
 
@@ -21,10 +21,10 @@ const Person = mongoose.model('Person', personSchema)
 
 const mongoConnected = mongoose.connect(url)
 if (process.argv.length < 4) {
-    mongoConnected.then((result) => {
+    mongoConnected.then(() => {
         console.log('connected')
         Person.find({}).then(result => {
-            console.log("phonebook: ");
+            console.log('phonebook: ')
             result.forEach(person => {
                 console.log(`${person.name} ${person.number}`)
             })
@@ -34,7 +34,7 @@ if (process.argv.length < 4) {
 }
 else if (process.argv.length > 3) {
     mongoConnected
-        .then((result) => {
+        .then(() => {
             const person = new Person({
                 name: name,
                 number: number

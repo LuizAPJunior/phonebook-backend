@@ -8,7 +8,7 @@ const Person = require('./models/person')
 
 app.use(express.static('build'))
 app.use(express.json())
-morgan.token('type', function (req, res) {
+morgan.token('type', function (req) {
     if (req.method === 'POST') {
         return JSON.stringify(req.body)
     }
@@ -79,12 +79,10 @@ app.post('/api/persons', (request, response, next) => {
 
 
 app.put('/api/persons/:id', (request, response, next) => {
-    const {name, number} = request.body
+    const { name, number } = request.body
 
     Person.findByIdAndUpdate(
-        request.params.id, 
-        {name, number}, 
-        { new: true, runValidators: true, context:'query' })
+        request.params.id, { name, number }, { new: true, runValidators: true, context:'query' })
         .then((updatedPerson) => {
             response.json(updatedPerson)
         })
@@ -95,7 +93,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
-        .then(result => {
+        .then(() => {
             response.status(204).end()
         })
         .catch(error => next(error))
